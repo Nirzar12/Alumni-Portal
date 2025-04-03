@@ -1,0 +1,24 @@
+# Ignore node_modules (for Node.js projects)
+node_modules/
+
+# Ignore compiled binaries and executable files
+*.exe
+*.out
+*.class
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# Ignore environment files
+.env
+
+# Ignore log files
+*.log
+
+# Ignore IDE files (VS Code, JetBrains, Eclipse, etc.)
+.vscode/
+.idea/
+*.iml
+
+
