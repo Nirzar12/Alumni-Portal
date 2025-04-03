@@ -1,22 +1,49 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import API from "../../api/authAPI";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
+    const navigate = useNavigate()
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
     const handleLogin = async (e) => {
         e.preventDefault();
+        
+        console.log("Logging in with:", { email, password });
+    
         try {
-            const res = await API.post("/login", { email, password });
+            const res = await axios.post("http://localhost:5000/api/users/login", { email, password });
+    
             console.log("Login successful:", res.data);
+            console.log("Login Response:", res.data); 
+    
+            // Check if the account is approved by the admin
+            if (!res.data.isValidAlumni) {
+                alert("Your request is pending approval. Please wait for admin approval. this is isvalid condition");
+                return;
+            }
+    
             alert("Login successful!");
+    
+            // Store token in localStorage
+            localStorage.setItem("token", res.data.token);
+    
+            // Redirect user to Home page
+            navigate("/");
+    
         } catch (err) {
             console.error("Login failed:", err.response?.data || err.message);
-            alert("Invalid credentials. Please try again.");
+    
+            if (err.response?.status === 403) {
+                alert("Your request is pending approval. Please wait for admin approval this is error.");
+            } else {
+                alert("Invalid credentials. Please try again.");
+            }
         }
     };
+    
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">

@@ -1,9 +1,28 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
-  const { user, logout } = useAuth(); // Get user & logout function from AuthContext
-  
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Check if a token exists in localStorage
+    const token = localStorage.getItem("token");
+    
+    if (token) {
+      // Decode the token to get user details (if needed)
+      // For now, we'll assume a logged-in user
+      setUser({ email: "user@example.com" }); // Replace with actual user data if available
+    } else {
+      setUser(null);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Remove token on logout
+    localStorage.removeItem("adminToken"); // Remove token on logout
+    setUser(null);
+    window.location.reload(); // Refresh the page to apply changes
+  };
 
   return (
     <nav className="bg-gray-100 shadow-md py-3 px-6 flex justify-between items-center">
@@ -26,10 +45,9 @@ const Navbar = () => {
       <div>
         {user ? (
           <div className="flex items-center space-x-4">
-            {/* <span className="text-gray-700">{user.email}</span> */}
-            <span className="text-gray-700">temp@gmail.com</span>
+            <span className="text-gray-700">{user.email}</span>
             <button
-              // onClick={logout}
+              onClick={handleLogout}
               className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
             >
               Logout

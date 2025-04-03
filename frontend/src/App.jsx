@@ -9,6 +9,8 @@ import PrivateRoute from "./routes/PrivateRoute";
 import Register from "./pages/auth/Register";
 import About from "./pages/content/About";
 import Contact from "./pages/content/Contact";
+import AdminLogin from "./pages/admin/AdminLogin";
+import UsersList from "./pages/admin/UsersList";
 
 
 function App() {
@@ -22,8 +24,12 @@ function App() {
           <Route path="about" element={<About />} />
           <Route path="Contact" element={<Contact />} />
           <Route path="alumni" element={<AlumniList />} />
-          <Route path="admin" element={<PrivateRoute />}>
+          <Route path="admin" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<PrivateRoute />}>
             <Route index element={<Dashboard />} />
+            <Route path="users" element={<UsersList />} />
+            {/* <Route path="posts" element={<UsersList />} /> */}
+            {/* <Route path="events" element={<UsersList />} /> */}
           </Route>
         </Route>
       </Routes>

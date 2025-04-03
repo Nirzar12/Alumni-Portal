@@ -1,33 +1,28 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import mongoose from 'mongoose';
+import connectDB from './configs/dbConfig.js';
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:5173", // Allow only your frontend origin
+    credentials: true, // Allow cookies & authentication headers
+}));
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+// DB connection 
+connectDB()
 
 // API Route
 app.get('/', (req, res) => {
     res.send('Welcome to the Alumni Portal API!');
 });
-app.get('/api/alumni', (req, res) => {
-    const alumni = [
-        { id: 1, name: "John Doe", batch: "2020", profession: "Software Engineer" },
-        { id: 2, name: "Jane Smith", batch: "2019", profession: "Data Scientist" },
-    ];
-    res.json(alumni);
-});
+app.use("/api/users", userRoutes);
+
 
 
 const PORT = process.env.PORT || 5000;
