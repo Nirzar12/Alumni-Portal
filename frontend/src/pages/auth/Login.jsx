@@ -1,49 +1,53 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import API from "../../api/authAPI";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import {  toast } from "react-hot-toast";
 
 const Login = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
     const handleLogin = async (e) => {
         e.preventDefault();
-        
-        console.log("Logging in with:", { email, password });
-    
+
         try {
             const res = await axios.post("http://localhost:5000/api/users/login", { email, password });
-    
-            console.log("Login successful:", res.data);
-            console.log("Login Response:", res.data); 
-    
-            // Check if the account is approved by the admin
-            if (!res.data.isValidAlumni) {
-                alert("Your request is pending approval. Please wait for admin approval. this is isvalid condition");
+            const { token, isValidAlumni } = res.data;
+
+            if (!isValidAlumni) {
+                alert("Your request is pending admin approval. Please wait.");
                 return;
             }
-    
-            alert("Login successful!");
-    
-            // Store token in localStorage
-            localStorage.setItem("token", res.data.token);
-    
-            // Redirect user to Home page
+
+            const decoded = jwtDecode(token);
+
+            const profileRes = await axios.get("http://localhost:5000/api/users/profile", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            localStorage.setItem("token", token);
+            localStorage.setItem("user", JSON.stringify(profileRes.data));
+
             navigate("/");
-    
+
+            // ✅ Corrected toast placement
+            toast.success("Login was successfull!")
+
         } catch (err) {
             console.error("Login failed:", err.response?.data || err.message);
-    
-            if (err.response?.status === 403) {
-                alert("Your request is pending approval. Please wait for admin approval this is error.");
+            const status = err.response?.status;
+
+            if (status === 403) {
+                toast.error("Your request is pending approval. Please wait for admin approval.");
             } else {
-                alert("Invalid credentials. Please try again.");
+                toast.error("Invalid credentials. Please try again.");
             }
         }
     };
-    
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -53,7 +57,6 @@ const Login = () => {
                 </h2>
 
                 <form onSubmit={handleLogin} className="space-y-4">
-                    {/* Email */}
                     <div>
                         <label className="block text-gray-700 font-medium">Email</label>
                         <input type="email" name="email" placeholder="Enter your email"
@@ -61,7 +64,6 @@ const Login = () => {
                             value={email} onChange={(e) => setEmail(e.target.value)} required />
                     </div>
 
-                    {/* Password */}
                     <div>
                         <label className="block text-gray-700 font-medium">Password</label>
                         <input type="password" name="password" placeholder="Enter your password"
@@ -69,19 +71,19 @@ const Login = () => {
                             value={password} onChange={(e) => setPassword(e.target.value)} required />
                     </div>
 
-                    {/* Login Button */}
                     <button type="submit"
                         className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition">
                         Login
                     </button>
                 </form>
 
-                {/* Register Link */}
                 <p className="text-gray-600 text-center mt-4">
                     Don't have an account?{" "}
                     <Link to="/register" className="text-blue-500 hover:underline">Register here</Link>
                 </p>
             </div>
+
+            
         </div>
     );
 };

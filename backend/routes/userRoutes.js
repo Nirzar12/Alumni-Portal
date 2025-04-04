@@ -6,7 +6,8 @@ import {
     getUserProfile, 
     approveAlumni, 
     makeAdmin, 
-    getAllUsers, 
+    getAllUsers,
+    getAllAlumni, 
     deleteUser, 
     logoutUser 
   } from "../controllers/userController.js";
@@ -17,11 +18,13 @@ const router = express.Router();
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/admin/login", loginAdmin);
+
 router.post("/logout", logoutUser);
 router.get("/profile", protect, getUserProfile);  // Protected Route
 router.put("/approve/:id", protect, adminOnly, approveAlumni);
 router.put("/make-admin/:id", protect, adminOnly, makeAdmin);
 router.get("/getallusers", protect, adminOnly, getAllUsers);
 router.delete("/delete/:id", protect, adminOnly, deleteUser); 
+router.get("/alumni", protect, getAllAlumni); 
 
 export default router;

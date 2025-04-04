@@ -193,6 +193,19 @@ const logoutUser = asyncHandler(async (req, res) => {
   res.json({ message: "Logged out successfully" });
 });
 
+// @desc    Get all approved alumni
+// @route   GET /api/alumni
+// @access  Public
+const getAllAlumni = asyncHandler(async (req, res) => {
+  try {
+    const alumni = await User.find({ isValidAlumni: true }).sort({ batch: -1 }); // sort by batch descending
+    res.json(alumni);
+  } catch (error) {
+    console.error("Error fetching alumni:", error);
+    res.status(500).json({ message: "Failed to fetch alumni" });
+  }
+});
+
 export { 
   registerUser, 
   loginUser, 
@@ -201,6 +214,7 @@ export {
   approveAlumni, 
   makeAdmin, 
   getAllUsers, 
+  getAllAlumni,
   deleteUser, 
   logoutUser 
 };

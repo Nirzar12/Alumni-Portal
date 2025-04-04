@@ -1,56 +1,63 @@
-import API from "./authAPI"; // Import the API instance from authAPI.js
+import API from "./authAPI"; // Axios instance with baseURL and auth
 
-// Fetch all alumni
+// ✅ Get all alumni with token
 export const getAllAlumni = async () => {
     try {
-        const response = await API.get("/alumni");
-        return response.data;
+        const token = localStorage.getItem("token"); // or "adminToken" based on your logic
+
+        const { data } = await API.get("http://localhost:5000/api/users/alumni", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        return data;
     } catch (error) {
-        console.error("Error fetching alumni:", error);
+        console.error("🔴 Failed to fetch all alumni:", error.response?.data || error.message);
         throw error;
     }
 };
 
-// Fetch a single alumni by ID
+// ✅ Get single alumni by ID
 export const getAlumniById = async (id) => {
     try {
-        const response = await API.get(`/alumni/${id}`);
-        return response.data;
+        const { data } = await API.get(`/alumni/${id}`);
+        return data;
     } catch (error) {
-        console.error("Error fetching alumni by ID:", error);
+        console.error(`🔴 Failed to fetch alumni with ID ${id}:`, error.response?.data || error.message);
         throw error;
     }
 };
 
-// Create a new alumni record
+// ✅ Create new alumni
 export const createAlumni = async (alumniData) => {
     try {
-        const response = await API.post("/alumni", alumniData);
-        return response.data;
+        const { data } = await API.post("/alumni", alumniData);
+        return data;
     } catch (error) {
-        console.error("Error creating alumni:", error);
+        console.error("🔴 Failed to create alumni:", error.response?.data || error.message);
         throw error;
     }
 };
 
-// Update an existing alumni record
+// ✅ Update alumni
 export const updateAlumni = async (id, updatedData) => {
     try {
-        const response = await API.put(`/alumni/${id}`, updatedData);
-        return response.data;
+        const { data } = await API.put(`/alumni/${id}`, updatedData);
+        return data;
     } catch (error) {
-        console.error("Error updating alumni:", error);
+        console.error(`🔴 Failed to update alumni with ID ${id}:`, error.response?.data || error.message);
         throw error;
     }
 };
 
-// Delete an alumni record
+// ✅ Delete alumni
 export const deleteAlumni = async (id) => {
     try {
-        const response = await API.delete(`/alumni/${id}`);
-        return response.data;
+        const { data } = await API.delete(`/alumni/${id}`);
+        return data;
     } catch (error) {
-        console.error("Error deleting alumni:", error);
+        console.error(`🔴 Failed to delete alumni with ID ${id}:`, error.response?.data || error.message);
         throw error;
     }
 };

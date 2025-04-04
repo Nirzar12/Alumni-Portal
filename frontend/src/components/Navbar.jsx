@@ -1,27 +1,55 @@
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  
 
   useEffect(() => {
-    // Check if a token exists in localStorage
-    const token = localStorage.getItem("token");
-    
-    if (token) {
-      // Decode the token to get user details (if needed)
-      // For now, we'll assume a logged-in user
-      setUser({ email: "user@example.com" }); // Replace with actual user data if available
-    } else {
-      setUser(null);
-    }
-  }, []);
+    const fetchUserProfile = async () => {
+      const token = localStorage.getItem("token");
 
+      if (!token) return setUser(null);
+
+      try {
+        const decoded = jwtDecode(token);
+        const userId = decoded.id;
+
+        // Optionally: you can check if token is expired here using decoded.exp
+        const res = await axios.get(`http://localhost:5000/api/users/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setUser(res.data); // Expected: { _id, name, email, batch, stream }
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+        setUser(null);
+        localStorage.removeItem("token"); // Remove bad token
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove token on logout
-    localStorage.removeItem("adminToken"); // Remove token on logout
+    // Clear all tokens and user info
+    localStorage.removeItem("token");
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("user");
+
+    // Reset user state
     setUser(null);
-    window.location.reload(); // Refresh the page to apply changes
+
+    // Navigate to homepage (or login page)
+    navigate("/");
+
+    // Optionally reload to reset state completely
+    window.location.reload();
   };
 
   return (
@@ -33,11 +61,22 @@ const Navbar = () => {
 
       {/* Center: Navigation Links */}
       <div className="space-x-6">
-        <Link to="/about" className="text-gray-700 hover:text-blue-600">
-          About
-        </Link>
+        {user && (
+          <>
+          <Link to="/alumni" className="text-gray-700 hover:text-blue-600">
+            Alumni
+          </Link>
+          <Link to="/events" className="text-gray-700 hover:text-blue-600">
+            Events
+          </Link>
+          </>
+        )}
+
         <Link to="/contact" className="text-gray-700 hover:text-blue-600">
           Contact
+        </Link>
+        <Link to="/about" className="text-gray-700 hover:text-blue-600">
+          About Us
         </Link>
       </div>
 
