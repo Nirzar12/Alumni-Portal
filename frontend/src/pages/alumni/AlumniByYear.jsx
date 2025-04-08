@@ -1,26 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getAllAlumni } from "../../api/alumniAPI";
+import { getAlumniByYear } from "../../api/alumniAPI";
+import Loader from "../../components/Loader"; // ✅ Adjust the path as needed
 
 const AlumniByYear = () => {
   const { year } = useParams();
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedStudent, setSelectedStudent] = useState(null); // To store selected alumni details
+  const [selectedStudent, setSelectedStudent] = useState(null);
 
   useEffect(() => {
-    const fetchAlumniByYear = async () => {
+    const fetchAlumni = async () => {
       try {
         setLoading(true);
-        const allAlumni = await getAllAlumni();
-
-        // Filter alumni based on batch year
-        const filteredAlumni = allAlumni.filter(
-          (alum) => alum.batch && parseInt(alum.batch) === parseInt(year)
-        );
-
-        setStudents(filteredAlumni);
+        const data = await getAlumniByYear(year);
+        setStudents(data);
       } catch (err) {
         console.error("🔴 Error fetching alumni:", err);
         setError("Failed to load alumni. Please try again.");
@@ -29,10 +24,10 @@ const AlumniByYear = () => {
       }
     };
 
-    fetchAlumniByYear();
+    fetchAlumni();
   }, [year]);
 
-  if (loading) return <div className="text-center mt-6">Loading alumni...</div>;
+  if (loading) return <Loader />; // ✅ Your custom loader
   if (error) return <div className="text-center text-red-500 mt-6">{error}</div>;
 
   return (
@@ -48,7 +43,6 @@ const AlumniByYear = () => {
               key={student._id}
               className="flex flex-col bg-white shadow-sm border border-slate-200 rounded-lg my-6 w-96"
             >
-              {/* Profile Image */}
               <div className="m-2.5 overflow-hidden rounded-md h-80 flex justify-center items-center">
                 <img
                   className="w-full h-full object-cover"
@@ -57,7 +51,6 @@ const AlumniByYear = () => {
                 />
               </div>
 
-              {/* Profile Details */}
               <div className="p-6 text-center">
                 <h4 className="mb-1 text-xl font-semibold text-slate-800">
                   {student.name}
@@ -70,11 +63,9 @@ const AlumniByYear = () => {
                 </p>
               </div>
 
-              {/* See More Button */}
               <div className="flex justify-center p-6 pt-2 gap-7">
                 <button
-                  className="min-w-32 rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none"
-                  type="button"
+                  className="min-w-32 rounded-md bg-slate-800 py-2 px-4 text-sm text-white shadow-md hover:bg-slate-700"
                   onClick={() => setSelectedStudent(student)}
                 >
                   See More
@@ -88,7 +79,7 @@ const AlumniByYear = () => {
       {/* MODAL */}
       {selectedStudent && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative">
             <button
               className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
               onClick={() => setSelectedStudent(null)}

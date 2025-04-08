@@ -15,6 +15,9 @@ import UsersList from "./pages/admin/UsersList";
 import AlumniByYear from "./pages/alumni/AlumniByYear";
 import Events from "./pages/content/Events";
 
+
+
+
 function App() {
   return (
     <>
@@ -23,6 +26,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
+            
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="about" element={<About />} />

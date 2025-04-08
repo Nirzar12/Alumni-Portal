@@ -27,4 +27,5 @@ router.get("/getallusers", protect, adminOnly, getAllUsers);
 router.delete("/delete/:id", protect, adminOnly, deleteUser); 
 router.get("/alumni", protect, getAllAlumni); 
 
+
 export default router;
