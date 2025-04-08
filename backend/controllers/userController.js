@@ -18,6 +18,7 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("User already exists");
   }
+  const photo = req.file ? req.file.filename : null;
 
   const user = await User.create({
     name,
@@ -26,6 +27,7 @@ const registerUser = asyncHandler(async (req, res) => {
     batch,
     stream,
     password,
+    photo,
   });
 
   if (user) {
@@ -33,6 +35,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      photo:user.photo,
       token: generateToken(user._id),
     });
   } else {
@@ -45,40 +48,40 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users/login
 // @access  Public
 const loginUser = asyncHandler(async (req, res) => {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-  
-    // Check if the user exists
-    if (!user) {
-      res.status(401);
-      throw new Error("Invalid email or password");
-    }
-  
-    // Check if the password is correct
-    const isPasswordValid = await user.matchPassword(password);
-    if (!isPasswordValid) {
-      res.status(401);
-      throw new Error("Invalid email or password");
-    }
-  
-    // Check if the user is approved as an alumni
-    if (!user.isValidAlumni) {
-      return res.status(403).json({
-        message: "Your request is pending approval. Please wait for admin approval.",
-      });
-    }
-  
-    // If all checks pass, allow login
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      isValidAlumni:user.isValidAlumni,
-      token: generateToken(user._id),
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+
+  // Check if the user exists
+  if (!user) {
+    res.status(401);
+    throw new Error("Invalid email or password");
+  }
+
+  // Check if the password is correct
+  const isPasswordValid = await user.matchPassword(password);
+  if (!isPasswordValid) {
+    res.status(401);
+    throw new Error("Invalid email or password");
+  }
+
+  // Check if the user is approved as an alumni
+  if (!user.isValidAlumni) {
+    return res.status(403).json({
+      message:
+        "Your request is pending approval. Please wait for admin approval.",
     });
+  }
+
+  // If all checks pass, allow login
+  res.json({
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    isAdmin: user.isAdmin,
+    isValidAlumni: user.isValidAlumni,
+    token: generateToken(user._id),
   });
-  
+});
 
 // @desc    Login Admin
 // @route   POST /api/admin/login
@@ -206,15 +209,15 @@ const getAllAlumni = asyncHandler(async (req, res) => {
   }
 });
 
-export { 
-  registerUser, 
-  loginUser, 
-  loginAdmin, 
-  getUserProfile, 
-  approveAlumni, 
-  makeAdmin, 
-  getAllUsers, 
+export {
+  registerUser,
+  loginUser,
+  loginAdmin,
+  getUserProfile,
+  approveAlumni,
+  makeAdmin,
+  getAllUsers,
   getAllAlumni,
-  deleteUser, 
-  logoutUser 
+  deleteUser,
+  logoutUser,
 };

@@ -28,14 +28,17 @@ const AlumniByYear = () => {
   }, [year]);
 
   if (loading) return <Loader />; // ✅ Your custom loader
-  if (error) return <div className="text-center text-red-500 mt-6">{error}</div>;
+  if (error)
+    return <div className="text-center text-red-500 mt-6">{error}</div>;
 
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-6 text-center">Alumni of {year}</h2>
 
       {students.length === 0 ? (
-        <p className="text-center text-gray-500">No alumni found for this year.</p>
+        <p className="text-center text-gray-500">
+          No alumni found for this year.
+        </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {students.map((student) => (
@@ -44,9 +47,18 @@ const AlumniByYear = () => {
               className="flex flex-col bg-white shadow-sm border border-slate-200 rounded-lg my-6 w-96"
             >
               <div className="m-2.5 overflow-hidden rounded-md h-80 flex justify-center items-center">
-                <img
+                {/* <img
                   className="w-full h-full object-cover"
                   src={student.profilePic || "https://docs.material-tailwind.com/img/team-3.jpg"}
+                  alt={student.name}
+                /> */}
+                <img
+                  className="w-full h-full object-cover"
+                  src={
+                    student.photo
+                      ? `http://localhost:5000/uploads/${student.photo} `
+                      : "https://docs.material-tailwind.com/img/team-3.jpg"
+                  }
                   alt={student.name}
                 />
               </div>
@@ -89,15 +101,31 @@ const AlumniByYear = () => {
             <div className="text-center">
               <img
                 className="w-32 h-32 rounded-full mx-auto"
-                src={selectedStudent.profilePic || "https://docs.material-tailwind.com/img/team-3.jpg"}
+                src={
+                  selectedStudent.photo
+                    ? `http://localhost:5000/uploads/${selectedStudent.photo}`
+                    : "https://docs.material-tailwind.com/img/team-3.jpg"
+                }
                 alt={selectedStudent.name}
               />
-              <h3 className="text-2xl font-semibold mt-4">{selectedStudent.name}</h3>
-              <p className="text-gray-500">{selectedStudent.stream} - {selectedStudent.batch}</p>
-              <p className="text-gray-700 mt-2"><strong>Email:</strong> {selectedStudent.email}</p>
-              <p className="text-gray-700"><strong>Enrollment:</strong> {selectedStudent.enrollment}</p>
-              <p className="text-gray-700"><strong>Phone:</strong> {selectedStudent.phone || "N/A"}</p>
-              <p className="text-gray-600 mt-4">{selectedStudent.about || "No additional details available."}</p>
+              <h3 className="text-2xl font-semibold mt-4">
+                {selectedStudent.name}
+              </h3>
+              <p className="text-gray-500">
+                {selectedStudent.stream} - {selectedStudent.batch}
+              </p>
+              <p className="text-gray-700 mt-2">
+                <strong>Email:</strong> {selectedStudent.email}
+              </p>
+              <p className="text-gray-700">
+                <strong>Enrollment:</strong> {selectedStudent.enrollment}
+              </p>
+              <p className="text-gray-700">
+                <strong>Phone:</strong> {selectedStudent.phone || "N/A"}
+              </p>
+              <p className="text-gray-600 mt-4">
+                {selectedStudent.about || "No additional details available."}
+              </p>
             </div>
             <div className="mt-4 flex justify-center">
               <button

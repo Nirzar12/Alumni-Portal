@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const Register = () => {
     const navigate = useNavigate();
+    const [photo, setPhoto] = useState(null);
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -24,9 +25,22 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const data =   new FormData();
+        data.append("name", formData.name);  
+        data.append("email", formData.email);
+        data.append("enrollment", formData.enrollment);
+        data.append("batch", formData.batch);
+        data.append("stream", formData.stream);
+        data.append("password", formData.password);
+        data.append("photo", photo); // 📸 Photo added
         
         try {
-            const response = await axios.post("http://localhost:5000/api/users/register", formData);
+            // const response = await axios.post("http://localhost:5000/api/users/register", formData);
+            const response =  await axios.post("http://localhost:5000/api/users/register", data, {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              });
             console.log("Registration successful:", response.data);
             alert("Registration successful!");
             navigate("/login")
@@ -101,6 +115,18 @@ const Register = () => {
                         <input type="password" name="password" placeholder="Enter a strong password"
                             className="w-full px-4 py-2 border rounded-md focus:ring focus:ring-blue-200"
                             value={formData.password} onChange={handleChange} required />
+                    </div>
+                    {/* Photo Upload  */}
+                    <div>
+                        <label className="block text-gray-700 font-medium">Upload Your Photo</label>
+                        <input
+                            type="file"
+                            name="photo"
+                            accept="image/*"
+                            className="w-full px-4 py-2 border rounded-md focus:ring focus:ring-blue-200"
+                            onChange={(e) => setPhoto(e.target.files[0])}
+                            required
+                        />
                     </div>
 
                     {/* Register Button */}
