@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from "./configs/dbConfig.js";
 import userRoutes from "./routes/userRoutes.js";
 import alumniRoutes from "./routes/alumniRoutes.js";
+import eventRoutes from './routes/eventRoutes.js';
 
 import path from "path";
 
@@ -30,6 +31,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/users", userRoutes);
 app.use("/api/alumni", alumniRoutes);
+app.use('/api/events', eventRoutes);
 app.use("/uploads", express.static(path.join(path.resolve(), "/uploads")));
 
 

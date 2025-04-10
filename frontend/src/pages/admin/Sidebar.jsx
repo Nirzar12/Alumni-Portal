@@ -25,7 +25,7 @@ const Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/admin/events"
+              to="/admin/dashboard/events"
               className="block px-4 py-2 rounded-lg hover:bg-gray-700 transition"
             >
               📅 Events

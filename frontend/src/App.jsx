@@ -14,6 +14,7 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import UsersList from "./pages/admin/UsersList";
 import AlumniByYear from "./pages/alumni/AlumniByYear";
 import Events from "./pages/content/Events";
+import AdminEvents from "./pages/admin/AdminEvents";
 
 
 
@@ -38,8 +39,8 @@ function App() {
             <Route path="/admin/dashboard" element={<PrivateRoute />}>
               <Route index element={<Dashboard />} />
               <Route path="users" element={<UsersList />} />
+              <Route path="events" element={<AdminEvents />} />
               {/* <Route path="posts" element={<UsersList />} /> */}
-              {/* <Route path="events" element={<UsersList />} /> */}
             </Route>
           </Route>
         </Routes>
