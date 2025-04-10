@@ -33,7 +33,10 @@ const AlumniList = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-4xl text-center text-blue-600 font-bold mb-4">Alumni by Year</h2>
+      {/* <h2 className="text-4xl text-center text-blue-600 font-bold mb-4">Alumni by Year</h2> */}
+      <h2 className="text-4xl font-bold text-center mx-4 mb-10 text-white tracking-wide border-b-4 border-blue-500 inline-block pb-2">
+      Alumni by Year
+</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {yearStats.map((group) => (
           <div

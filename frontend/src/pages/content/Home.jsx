@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="min-h-[80vh] flex flex-col justify-center items-center px-4 py-10 bg-gradient-to-br from-slate-100 to-slate-200">
+    <div className="min-h-screen flex flex-col justify-center items-center px-4 py-10 bg-gradient-to-br from-slate-100 to-slate-200">
       <h1 className="text-4xl md:text-5xl font-bold text-blue-700 text-center mb-4">
         Welcome to LD College Alumni Portal
       </h1>
