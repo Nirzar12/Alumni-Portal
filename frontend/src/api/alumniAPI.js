@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5050";
+const BASE_URL = "https://alumni-portal-backend-f7hd.onrender.com";
 
 // ✅ Get all valid alumni
 export const getAllAlumni = async () => {
