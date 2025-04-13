@@ -123,7 +123,7 @@ const AlumniByYear = () => {
                     className="w-full h-full object-cover"
                     src={
                       student.photo
-                        ? `http://localhost:5000/uploads/${student.photo}`
+                        ? `http://localhost:5050/uploads/${student.photo}`
                         : "https://docs.material-tailwind.com/img/team-3.jpg"
                     }
                     alt={student.name}
@@ -169,7 +169,7 @@ const AlumniByYear = () => {
                 className="w-24 h-24 rounded-full mx-auto object-cover"
                 src={
                   selectedStudent.photo
-                    ? `http://localhost:5000/uploads/${selectedStudent.photo}`
+                    ? `http://localhost:5050/uploads/${selectedStudent.photo}`
                     : "https://docs.material-tailwind.com/img/team-3.jpg"
                 }
                 alt={selectedStudent.name}

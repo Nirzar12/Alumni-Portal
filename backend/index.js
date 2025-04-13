@@ -30,10 +30,13 @@ app.get("/", (req, res) => {
   res.send("Welcome to the Alumni Portal API!");
 });
 app.use("/api/users", userRoutes);
-app.use("/api/alumni", alumniRoutes);
-app.use('/api/events', eventRoutes);
-app.use("/uploads", express.static(path.join(path.resolve(), "/uploads")));
+app.use("/api/app/alumni", alumniRoutes);
+app.use('/api/app/events', eventRoutes);
+// app.use("/uploads", express.static(path.join(path.resolve(), "/uploads")));
+
+// Serve poster images
+app.use("/uploads", express.static(path.join(path.resolve(), "uploads")));
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5050;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -41,7 +41,7 @@ const AlumniList = () => {
         {yearStats.map((group) => (
           <div
             key={group._id}
-            onClick={() => navigate(`/alumni/year/${group._id}`)}
+            onClick={() => navigate(`/app/alumni/year/${group._id}`)}
             className="cursor-pointer bg-blue-100 text-center p-6 rounded-xl shadow hover:bg-blue-200 transition"
           >
             <h3 className="text-lg font-semibold">{group._id}</h3>

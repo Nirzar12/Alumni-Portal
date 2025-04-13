@@ -1,10 +1,10 @@
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "http://localhost:5050";
 
 // ✅ Get all valid alumni
 export const getAllAlumni = async () => {
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch(`${BASE_URL}/api/users/alumni`, {
+    const res = await fetch(`${BASE_URL}/api/users/app/alumni`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -22,7 +22,7 @@ export const getAllAlumni = async () => {
 export const getAlumniStatsByYear = async () => {
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch(`${BASE_URL}/api/alumni/stats-by-year`, {
+    const res = await fetch(`${BASE_URL}/api/app/alumni/stats-by-year`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -40,7 +40,7 @@ export const getAlumniByYear = async (year) => {
   try {
     const token = localStorage.getItem("token");
     
-    const res = await fetch(`${BASE_URL}/api/alumni/by-year/${year}`, {
+    const res = await fetch(`${BASE_URL}/api/app/alumni/by-year/${year}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -57,7 +57,7 @@ export const getAlumniByYear = async (year) => {
 export const getAlumniById = async (id) => {
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch(`${BASE_URL}/api/alumni/${id}`, {
+    const res = await fetch(`${BASE_URL}/api/app/alumni/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -73,7 +73,7 @@ export const getAlumniById = async (id) => {
 // ✅ Create new alumni
 export const createAlumni = async (alumniData) => {
   try {
-    const res = await fetch(`${BASE_URL}/api/alumni`, {
+    const res = await fetch(`${BASE_URL}/api/app/alumni`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -92,7 +92,7 @@ export const createAlumni = async (alumniData) => {
 // ✅ Update alumni
 export const updateAlumni = async (id, updatedData) => {
   try {
-    const res = await fetch(`${BASE_URL}/api/alumni/${id}`, {
+    const res = await fetch(`${BASE_URL}/api/app/alumni/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -111,7 +111,7 @@ export const updateAlumni = async (id, updatedData) => {
 // ✅ Delete alumni
 export const deleteAlumni = async (id) => {
   try {
-    const res = await fetch(`${BASE_URL}/api/alumni/${id}`, {
+    const res = await fetch(`${BASE_URL}/api/app/alumni/${id}`, {
       method: "DELETE",
     });
 

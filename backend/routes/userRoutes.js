@@ -26,7 +26,7 @@ router.put("/approve/:id", protect, adminOnly, approveAlumni);
 router.put("/make-admin/:id", protect, adminOnly, makeAdmin);
 router.get("/getallusers", protect, adminOnly, getAllUsers);
 router.delete("/delete/:id", protect, adminOnly, deleteUser); 
-router.get("/alumni", protect, getAllAlumni); 
+router.get("/app/alumni", protect, getAllAlumni); 
 
 
 export default router;

@@ -19,7 +19,7 @@ const UsersList = () => {
         return;
       }
 
-      const res = await axios.get("http://localhost:5000/api/users/getallusers", {
+      const res = await axios.get("http://localhost:5050/api/users/getallusers", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -33,10 +33,10 @@ const UsersList = () => {
 
   const handleAccept = async (userId) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("adminToken");
 
       await axios.put(
-        `http://localhost:5000/api/users/approve/${userId}`,
+        `http://localhost:5050/api/users/approve/${userId}`,
         {},
         {
           headers: {
@@ -55,9 +55,9 @@ const UsersList = () => {
 
   const handleReject = async (userId) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("adminToken");
 
-      await axios.delete(`http://localhost:5000/api/users/delete/${userId}`, {
+      await axios.delete(`http://localhost:5050/api/users/delete/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -187,3 +187,122 @@ const UsersList = () => {
 };
 
 export default UsersList;
+
+
+// src/pages/Admin/UsersList.js
+
+// import React, { useEffect, useState } from "react";
+// import axios from "axios";
+// import toast from "react-hot-toast";
+
+// const UsersList = () => {
+//   const [users, setUsers] = useState([]);
+
+//   const fetchUsers = async () => {
+//     try {
+//       const token = localStorage.getItem("adminToken");
+//       const response = await axios.get("/api/users", {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       });
+//       setUsers(response.data);
+//     } catch (error) {
+//       toast.error("Failed to fetch users");
+//       console.error(error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchUsers();
+//   }, []);
+
+//   const handleAccept = async (id) => {
+//     try {
+//       const token = localStorage.getItem("adminToken");
+//       await axios.put(`/api/users/${id}/approve`, {}, {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       });
+//       toast.success("User approved!");
+//       fetchUsers();
+//     } catch (error) {
+//       toast.error("Error approving user");
+//       console.error(error);
+//     }
+//   };
+
+//   const handleReject = async (id) => {
+//     try {
+//       const token = localStorage.getItem("adminToken");
+//       await axios.delete(`/api/users/${id}/reject`, {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       });
+//       toast.success("User rejected!");
+//       fetchUsers();
+//     } catch (error) {
+//       toast.error("Error rejecting user");
+//       console.error(error);
+//     }
+//   };
+
+//   return (
+//     <div className="p-4">
+//       <h2 className="text-2xl font-semibold mb-4 text-center">Users List</h2>
+//       <div className="overflow-x-auto">
+//         <table className="min-w-full bg-white rounded-lg shadow">
+//           <thead>
+//             <tr className="bg-gray-100 text-left">
+//               <th className="py-2 px-4">Name</th>
+//               <th className="py-2 px-4">Email</th>
+//               <th className="py-2 px-4">Status</th>
+//               <th className="py-2 px-4">Action</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             {users.map((user) => (
+//               <tr key={user._id} className="border-t text-left">
+//                 <td className="py-2 px-4">{user.name}</td>
+//                 <td className="py-2 px-4">{user.email}</td>
+//                 <td className="py-2 px-4">
+//                   {user.status === "Pending" ? (
+//                     <span className="bg-yellow-200 text-yellow-800 px-2 py-1 rounded">
+//                       Pending
+//                     </span>
+//                   ) : (
+//                     <span className="bg-green-200 text-green-800 px-2 py-1 rounded">
+//                       {user.status}
+//                     </span>
+//                   )}
+//                 </td>
+//                 <td className="py-2 px-4">
+//                   {user.status === "Pending" && (
+//                     <div className="flex gap-2">
+//                       <button
+//                         onClick={() => handleAccept(user._id)}
+//                         className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
+//                       >
+//                         Accept
+//                       </button>
+//                       <button
+//                         onClick={() => handleReject(user._id)}
+//                         className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+//                       >
+//                         Reject
+//                       </button>
+//                     </div>
+//                   )}
+//                 </td>
+//               </tr>
+//             ))}
+//           </tbody>
+//         </table>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default UsersList;

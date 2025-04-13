@@ -17,7 +17,7 @@ const Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/admin/posts"
+              to="/admin/dashboard/posts"
               className="block px-4 py-2 rounded-lg hover:bg-gray-700 transition"
             >
               📝 Posts
