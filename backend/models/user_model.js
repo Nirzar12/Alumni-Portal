@@ -26,9 +26,29 @@ const userSchema = new mongoose.Schema(
     },
     stream: {
       type: String,
-      required: true,
-      enum: ["IT", "Computer", "Mechanical", "Electronics", "Civil"],
-    },
+      enum: [
+        "Applied Mechanics",
+        "Artificial Intelligence and Machine Learning",
+        "Automobile Engineering",
+        "Biomedical Engineering",
+        "Chemical Engineering",
+        "Civil Engineering",
+        "Computer Engineering",
+        "Electrical Engineering",
+        "Electronics and Communication Engineering",
+        "Environmental Engineering",
+        "Information Technology",
+        "Instrumentation and Control Engineering",
+        "Mechanical Engineering",
+        "Plastic Technology",
+        "Robotics and Automation",
+        "Rubber Technology",
+        "Textile Technology",
+        "Science and Humanities"
+      ],
+      required: true
+    }
+    ,
     password: {
       type: String,
       required: true,

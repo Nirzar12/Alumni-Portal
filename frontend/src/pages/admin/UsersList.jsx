@@ -19,15 +19,21 @@ const UsersList = () => {
         return;
       }
 
-      const res = await axios.get("http://localhost:5050/api/users/getallusers", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.get(
+        "http://localhost:5000/api/users/getallusers",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       setUsers(res.data);
     } catch (error) {
-      console.error("Error fetching users:", error.response?.data || error.message);
+      console.error(
+        "Error fetching users:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -36,7 +42,7 @@ const UsersList = () => {
       const token = localStorage.getItem("adminToken");
 
       await axios.put(
-        `http://localhost:5050/api/users/approve/${userId}`,
+        `http://localhost:5000/api/users/approve/${userId}`,
         {},
         {
           headers: {
@@ -45,11 +51,16 @@ const UsersList = () => {
         }
       );
 
-      setUsers(users.map(user =>
-        user._id === userId ? { ...user, isValidAlumni: true } : user
-      ));
+      setUsers(
+        users.map((user) =>
+          user._id === userId ? { ...user, isValidAlumni: true } : user
+        )
+      );
     } catch (error) {
-      console.error("Error approving user:", error.response?.data || error.message);
+      console.error(
+        "Error approving user:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -57,21 +68,27 @@ const UsersList = () => {
     try {
       const token = localStorage.getItem("adminToken");
 
-      await axios.delete(`http://localhost:5050/api/users/delete/${userId}`, {
+      await axios.delete(`http://localhost:5000/api/users/delete/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      setUsers(users.filter(user => user._id !== userId));
+      setUsers(users.filter((user) => user._id !== userId));
     } catch (error) {
-      console.error("Error rejecting user:", error.response?.data || error.message);
+      console.error(
+        "Error rejecting user:",
+        error.response?.data || error.message
+      );
     }
   };
 
-  const filteredUsers = users.filter(user =>
-    (user.name && user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    (user.enrollment && user.enrollment.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredUsers = users.filter(
+    (user) =>
+      (user.name &&
+        user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (user.enrollment &&
+        user.enrollment.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   return (
@@ -107,15 +124,21 @@ const UsersList = () => {
             <tbody>
               {filteredUsers.map((user, index) => (
                 <tr key={user._id} className="hover:bg-gray-50 transition">
-                  <td className="border border-gray-300 px-4 py-2 text-center">{index + 1}</td>
+                  <td className="border border-gray-300 px-4 py-2 text-center">
+                    {index + 1}
+                  </td>
                   <td
                     className="border border-gray-300 px-4 py-2 text-blue-600 hover:underline cursor-pointer"
                     onClick={() => setSelectedUser(user)}
                   >
                     {user.enrollment || "N/A"}
                   </td>
-                  <td className="border border-gray-300 px-4 py-2">{user.name}</td>
-                  <td className="border border-gray-300 px-4 py-2">{user.email}</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {user.name}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {user.email}
+                  </td>
                   <td className="border border-gray-300 px-4 py-2 text-center">
                     <span
                       className={`px-3 py-1 rounded-full text-sm font-medium ${
@@ -162,13 +185,28 @@ const UsersList = () => {
                 ✖
               </button>
               <div className="text-center">
-                <h3 className="text-lg font-semibold mb-2">{selectedUser.name}</h3>
-                <p><strong>Enrollment:</strong> {selectedUser.enrollment}</p>
-                <p><strong>Email:</strong> {selectedUser.email}</p>
-                <p><strong>Phone:</strong> {selectedUser.phone || "N/A"}</p>
-                <p><strong>Stream:</strong> {selectedUser.stream || "N/A"}</p>
-                <p><strong>Batch:</strong> {selectedUser.batch || "N/A"}</p>
-                <p><strong>About:</strong> {selectedUser.about || "No details available."}</p>
+                <h3 className="text-lg font-semibold mb-2">
+                  {selectedUser.name}
+                </h3>
+                <p>
+                  <strong>Enrollment:</strong> {selectedUser.enrollment}
+                </p>
+                <p>
+                  <strong>Email:</strong> {selectedUser.email}
+                </p>
+                <p>
+                  <strong>Phone:</strong> {selectedUser.phone || "N/A"}
+                </p>
+                <p>
+                  <strong>Stream:</strong> {selectedUser.stream || "N/A"}
+                </p>
+                <p>
+                  <strong>Batch:</strong> {selectedUser.batch || "N/A"}
+                </p>
+                <p>
+                  <strong>About:</strong>{" "}
+                  {selectedUser.about || "No details available."}
+                </p>
               </div>
               <div className="mt-4 text-center">
                 <button
@@ -187,7 +225,6 @@ const UsersList = () => {
 };
 
 export default UsersList;
-
 
 // src/pages/Admin/UsersList.js
 

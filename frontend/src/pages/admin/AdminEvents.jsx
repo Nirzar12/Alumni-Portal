@@ -16,7 +16,7 @@
 //   const fetchEvents = async () => {
 //     try {
 //       const token = localStorage.getItem("token");
-//       const res = await axios.get("http://localhost:5050/api/app/events", {
+//       const res = await axios.get("http://localhost:5000/api/app/events", {
 //         headers: { Authorization: `Bearer ${token}` },
 //       });
 //       setEvents(Array.isArray(res.data) ? res.data : []);
@@ -46,7 +46,7 @@
 
 //     try {
 //       const token = localStorage.getItem("token");
-//       await axios.post("http://localhost:5050/api/app/events", payload, {
+//       await axios.post("http://localhost:5000/api/app/events", payload, {
 //         headers: {
 //           "Content-Type": "multipart/form-data",
 //           Authorization: `Bearer ${token}`,
@@ -109,7 +109,7 @@
 //               </a>
 //               {event.poster ? (
 //                 <img
-//                   src={`http://localhost:5050${event.poster}`}
+//                   src={`http://localhost:5000${event.poster}`}
 //                   alt="Poster"
 //                   className="mt-auto w-full aspect-[4/3] object-cover rounded-md border"
 //                 />
@@ -205,8 +205,6 @@
 
 // export default AdminEvents;
 
-
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -227,7 +225,7 @@ const AdminEvents = () => {
   const fetchEvents = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5050/api/app/events", {
+      const res = await axios.get("http://localhost:5000/api/app/events", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setEvents(Array.isArray(res.data) ? res.data : []);
@@ -260,7 +258,7 @@ const AdminEvents = () => {
 
       if (editEvent) {
         await axios.put(
-          `http://localhost:5050/api/app/events/${editEvent._id}`,
+          `http://localhost:5000/api/app/events/${editEvent._id}`,
           payload,
           {
             headers: {
@@ -270,7 +268,7 @@ const AdminEvents = () => {
           }
         );
       } else {
-        await axios.post("http://localhost:5050/api/app/events", payload, {
+        await axios.post("http://localhost:5000/api/app/events", payload, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
@@ -310,7 +308,7 @@ const AdminEvents = () => {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5050/api/app/events/${id}`, {
+      await axios.delete(`http://localhost:5000/api/app/events/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchEvents();
@@ -356,8 +354,7 @@ const AdminEvents = () => {
               {event.description}
             </p>
             <p className="text-gray-500 text-xs mb-1">
-              <strong>Date:</strong>{" "}
-              {new Date(event.date).toLocaleDateString()}
+              <strong>Date:</strong> {new Date(event.date).toLocaleDateString()}
             </p>
             <p className="text-gray-500 text-xs mb-1">
               <strong>Contact:</strong> {event.contact}
@@ -379,7 +376,7 @@ const AdminEvents = () => {
             </a>
             {event.poster ? (
               <img
-                src={`http://localhost:5050${event.poster}`}
+                src={`http://localhost:5000${event.poster}`}
                 alt="Poster"
                 className="mt-auto w-full aspect-[4/3] object-cover rounded-md border"
               />

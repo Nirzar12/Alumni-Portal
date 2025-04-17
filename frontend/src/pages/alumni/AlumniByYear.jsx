@@ -70,15 +70,15 @@ const AlumniByYear = () => {
   };
 
   if (loading) return <Loader />;
-  if (error) return <div className="text-center text-red-500 mt-6">{error}</div>;
+  if (error)
+    return <div className="text-center text-red-500 mt-6">{error}</div>;
 
   return (
     <div className="p-4">
       {/* <h2 className="text-xl font-bold mb-4 text-center">Alumni of {year}</h2> */}
       <h2 className="text-4xl font-bold text-center mx-4 mb-10 text-white tracking-wide border-b-4 border-blue-500 inline-block pb-2">
-      Alumni of {year}
-</h2>
-
+        Alumni of {year}
+      </h2>
 
       {/* Department Filter with Checkmarks */}
       <div className="flex flex-wrap justify-center gap-2 mb-6">
@@ -123,7 +123,7 @@ const AlumniByYear = () => {
                     className="w-full h-full object-cover"
                     src={
                       student.photo
-                        ? `http://localhost:5050/uploads/${student.photo}`
+                        ? `http://localhost:5000/uploads/${student.photo}`
                         : "https://docs.material-tailwind.com/img/team-3.jpg"
                     }
                     alt={student.name}
@@ -169,7 +169,7 @@ const AlumniByYear = () => {
                 className="w-24 h-24 rounded-full mx-auto object-cover"
                 src={
                   selectedStudent.photo
-                    ? `http://localhost:5050/uploads/${selectedStudent.photo}`
+                    ? `http://localhost:5000/uploads/${selectedStudent.photo}`
                     : "https://docs.material-tailwind.com/img/team-3.jpg"
                 }
                 alt={selectedStudent.name}
@@ -209,5 +209,3 @@ const AlumniByYear = () => {
 };
 
 export default AlumniByYear;
-
-

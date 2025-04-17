@@ -15,10 +15,10 @@
 //       const token = localStorage.getItem("token");
 
 //       const [upcomingRes, pastRes] = await Promise.all([
-//         axios.get("http://localhost:5050/api/app/events/tag/upcoming", {
+//         axios.get("http://localhost:5000/api/app/events/tag/upcoming", {
 //           headers: { Authorization: `Bearer ${token}` },
 //         }),
-//         axios.get("http://localhost:5050/api/app/events/tag/past", {
+//         axios.get("http://localhost:5000/api/app/events/tag/past", {
 //           headers: { Authorization: `Bearer ${token}` },
 //         }),
 //       ]);
@@ -55,7 +55,7 @@
 //       >
 //         {event.poster && (
 //           <img
-//             src={`http://localhost:5050${event.poster}`}
+//             src={`http://localhost:5000${event.poster}`}
 //             alt="Event Poster"
 //             className="w-full aspect-[3/2] object-cover rounded-md mb-2"
 //           />
@@ -124,7 +124,7 @@
 
 //             {selectedEvent.poster && (
 //               <img
-//                 src={`http://localhost:5050${selectedEvent.poster}`}
+//                 src={`http://localhost:5000${selectedEvent.poster}`}
 //                 alt="Event Poster"
 //                 className="w-full aspect-video object-cover rounded mb-4"
 //               />
@@ -162,7 +162,6 @@
 
 // export default EventList;
 
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -171,15 +170,11 @@ const Events = () => {
   const [pastEvents, setPastEvents] = useState([]);
 
   const fetchEvents = async () => {
-    const res = await axios.get("http://localhost:5050/api/app/events");
+    const res = await axios.get("http://localhost:5000/api/app/events");
     const today = new Date();
 
-    const upcoming = res.data.filter(
-      (event) => new Date(event.date) >= today
-    );
-    const past = res.data.filter(
-      (event) => new Date(event.date) < today
-    );
+    const upcoming = res.data.filter((event) => new Date(event.date) >= today);
+    const past = res.data.filter((event) => new Date(event.date) < today);
 
     setUpcomingEvents(upcoming);
     setPastEvents(past);
@@ -196,7 +191,7 @@ const Events = () => {
     >
       {event.poster && (
         <img
-          src={`http://localhost:5050${event.poster}`}
+          src={`http://localhost:5000${event.poster}`}
           alt="poster"
           className="w-full h-40 object-cover"
         />
@@ -204,12 +199,19 @@ const Events = () => {
 
       <div className="p-4 flex flex-col justify-between flex-grow">
         <div>
-          <h3 className="font-semibold text-lg text-gray-800 mb-1 truncate">{event.name}</h3>
-          <p className="text-gray-600 text-sm mb-2 line-clamp-3">{event.description}</p>
+          <h3 className="font-semibold text-lg text-gray-800 mb-1 truncate">
+            {event.name}
+          </h3>
+          <p className="text-gray-600 text-sm mb-2 line-clamp-3">
+            {event.description}
+          </p>
         </div>
 
         <div className="mt-2 text-sm text-gray-500">
-          <p><span className="font-semibold">Date:</span> {new Date(event.date).toLocaleDateString()}</p>
+          <p>
+            <span className="font-semibold">Date:</span>{" "}
+            {new Date(event.date).toLocaleDateString()}
+          </p>
           {event.link && (
             <a
               href={event.link}
@@ -227,23 +229,31 @@ const Events = () => {
 
   return (
     <div className="p-6 min-h-screen bg-[#1d2531]">
-      <h2 className="text-3xl font-bold text-center text-blue-400 mb-8">🎉 Upcoming Events</h2>
+      <h2 className="text-3xl font-bold text-center text-blue-400 mb-8">
+        🎉 Upcoming Events
+      </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
         {upcomingEvents.length > 0 ? (
           upcomingEvents.map(renderEventCard)
         ) : (
-          <p className="text-center col-span-full text-gray-300">No upcoming events.</p>
+          <p className="text-center col-span-full text-gray-300">
+            No upcoming events.
+          </p>
         )}
       </div>
 
-      <h2 className="text-3xl font-bold text-center text-gray-200 mb-6">📜 Past Events</h2>
+      <h2 className="text-3xl font-bold text-center text-gray-200 mb-6">
+        📜 Past Events
+      </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {pastEvents.length > 0 ? (
           pastEvents.map(renderEventCard)
         ) : (
-          <p className="text-center col-span-full text-gray-300">No past events.</p>
+          <p className="text-center col-span-full text-gray-300">
+            No past events.
+          </p>
         )}
       </div>
     </div>

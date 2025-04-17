@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5050";
+const BASE_URL = "http://localhost:5000";
 
 // ✅ Get all valid alumni
 export const getAllAlumni = async () => {
@@ -39,7 +39,7 @@ export const getAlumniStatsByYear = async () => {
 export const getAlumniByYear = async (year) => {
   try {
     const token = localStorage.getItem("token");
-    
+
     const res = await fetch(`${BASE_URL}/api/app/alumni/by-year/${year}`, {
       headers: {
         Authorization: `Bearer ${token}`,
