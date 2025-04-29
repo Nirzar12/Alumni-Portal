@@ -1,10 +1,7 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faLinkedin,
-  faGithub,
-  faInstagram,
-} from "@fortawesome/free-brands-svg-icons";
+import { motion } from "framer-motion";
+import { FaLinkedin, FaGithub, FaInstagram, FaEnvelope, FaPhone } from "react-icons/fa";
+import { toast } from "react-hot-toast";
 
 const teamMembers = [
   {
@@ -50,66 +47,98 @@ const teamMembers = [
 ];
 
 const Contact = () => {
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    toast.success("Copied to clipboard!");
+  };
+
   return (
-    <div className="bg-gray-900 text-gray-100 min-h-screen py-10 px-4">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-10  tracking-wide border-b-4 border-blue-500 inline-block pb-2">
-          Contact Our Team
-        </h2>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-16"
+        >
+          <h1 className="text-4xl font-bold text-slate-800 mb-4">Meet Our Team</h1>
+          <p className="text-slate-600 max-w-2xl mx-auto">
+            Get in touch with the developers behind this alumni portal
+          </p>
+        </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {teamMembers.map((member, index) => (
-            <div
+            <motion.div
               key={index}
-              className="group bg-gray-800 p-5 rounded-lg shadow-md transform transition duration-300 ease-in-out hover:scale-105 hover:bg-gradient-to-br hover:from-gray-800 hover:via-gray-700 hover:to-gray-600 hover:shadow-blue-500/30 hover:shadow-lg flex flex-col h-full"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ scale: 1.03 }}
+              className="bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition"
             >
-              <img
-                src={member.photo}
-                alt={member.name}
-                className="w-full h-60 object-fill rounded-sm mb-4 shadow-lg bg-gray-700"
-              />
-              <div className="flex flex-col flex-grow">
-                <h4 className="text-xl font-semibold text-blue-300 mb-1 text-center">
-                  {member.name}
-                </h4>
-                <p className="text-gray-200 mb-1 text-center">
-                  <strong>Role:</strong> {member.role}
-                </p>
-                <p className="text-gray-400 mb-1 text-center overflow-hidden truncate group-hover:whitespace-normal group-hover:overflow-visible group-hover:text-ellipsis transition-all duration-300">
-                  <strong>Email:</strong> {member.email}
-                </p>
-                <p className="text-gray-400 mb-3 text-center">
-                  <strong>Phone:</strong> {member.phone}
-                </p>
+              <div className="relative h-64 bg-slate-100">
+                <img
+                  src={member.photo}
+                  alt={member.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.src = "/placeholder-profile.jpg";
+                  }}
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                  <h3 className="text-xl font-bold text-white">{member.name}</h3>
+                  <p className="text-slate-300">{member.role}</p>
+                </div>
+              </div>
 
-                <div className="flex justify-center space-x-4 mt-auto text-blue-400">
+              <div className="p-6">
+                <div
+                  className="flex items-center mb-3 cursor-pointer"
+                  onClick={() => copyToClipboard(member.email)}
+                >
+                  <FaEnvelope className="text-blue-600 mr-2" />
+                  <span className="text-slate-700 hover:text-blue-600 transition">
+                    {member.email}
+                  </span>
+                </div>
+                <div
+                  className="flex items-center mb-4 cursor-pointer"
+                  onClick={() => copyToClipboard(member.phone)}
+                >
+                  <FaPhone className="text-blue-600 mr-2" />
+                  <span className="text-slate-700 hover:text-blue-600 transition">
+                    {member.phone}
+                  </span>
+                </div>
+
+                <div className="flex justify-center space-x-4">
                   <a
                     href={member.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-blue-500 transition-transform transform group-hover:scale-110"
+                    className="text-blue-700 hover:text-blue-900 transition"
                   >
-                    <FontAwesomeIcon icon={faLinkedin} size="lg" />
+                    <FaLinkedin size={20} />
                   </a>
                   <a
                     href={member.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-gray-300 transition-transform transform group-hover:scale-110"
+                    className="text-slate-700 hover:text-black transition"
                   >
-                    <FontAwesomeIcon icon={faGithub} size="lg" />
+                    <FaGithub size={20} />
                   </a>
                   <a
                     href={member.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-pink-500 transition-transform transform group-hover:scale-110"
+                    className="text-pink-600 hover:text-pink-800 transition"
                   >
-                    <FontAwesomeIcon icon={faInstagram} size="lg" />
+                    <FaInstagram size={20} />
                   </a>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

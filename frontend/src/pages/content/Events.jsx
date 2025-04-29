@@ -1,259 +1,142 @@
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
-
-// const EventList = () => {
-//   const [upcomingEvents, setUpcomingEvents] = useState([]);
-//   const [pastEvents, setPastEvents] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState("");
-//   const [selectedEvent, setSelectedEvent] = useState(null);
-//   const [showModal, setShowModal] = useState(false);
-
-//   const fetchEvents = async () => {
-//     try {
-//       setLoading(true);
-//       const token = localStorage.getItem("token");
-
-//       const [upcomingRes, pastRes] = await Promise.all([
-//         axios.get("http://localhost:5000/api/app/events/tag/upcoming", {
-//           headers: { Authorization: `Bearer ${token}` },
-//         }),
-//         axios.get("http://localhost:5000/api/app/events/tag/past", {
-//           headers: { Authorization: `Bearer ${token}` },
-//         }),
-//       ]);
-
-//       setUpcomingEvents(upcomingRes.data);
-//       setPastEvents(pastRes.data);
-//     } catch (err) {
-//       console.error("Error loading events:", err);
-//       setError("Failed to fetch events");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchEvents();
-//   }, []);
-
-//   const openModal = (event) => {
-//     setSelectedEvent(event);
-//     setShowModal(true);
-//   };
-
-//   const closeModal = () => {
-//     setSelectedEvent(null);
-//     setShowModal(false);
-//   };
-
-//   const renderEvents = (events) =>
-//     events.map((event) => (
-//       <div
-//         key={event._id}
-//         className="p-2 bg-white border rounded-lg shadow-sm hover:shadow-md transition-all flex flex-col text-sm"
-//       >
-//         {event.poster && (
-//           <img
-//             src={`http://localhost:5000${event.poster}`}
-//             alt="Event Poster"
-//             className="w-full aspect-[3/2] object-cover rounded-md mb-2"
-//           />
-//         )}
-//         <h2 className="text-base font-semibold text-gray-800 line-clamp-1">
-//           {event.name}
-//         </h2>
-//         <p className="text-xs text-gray-500 mb-1">
-//           {new Date(event.date).toLocaleDateString()}
-//         </p>
-//         <p className="text-xs text-gray-700 line-clamp-2 mb-2">
-//           {event.description}
-//         </p>
-//         <button
-//           onClick={() => openModal(event)}
-//           className="mt-auto bg-blue-600 hover:bg-blue-700 text-white px-2 py-2 rounded text-md"
-//         >
-//           View Details
-//         </button>
-//       </div>
-//     ));
-
-//   if (loading) return <p className="text-center py-10">Loading events...</p>;
-//   if (error) return <p className="text-center text-red-500 py-10">{error}</p>;
-
-//   return (
-//     <div className="p-6 space-y-12">
-//       {/* Upcoming Events */}
-//       <div>
-//         <h2 className="text-3xl font-bold text-center text-white mb-8 tracking-wide border-b-4 border-blue-500 inline-block pb-1">
-//           Upcoming Events
-//         </h2>
-//         {upcomingEvents.length > 0 ? (
-//           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-//             {renderEvents(upcomingEvents)}
-//           </div>
-//         ) : (
-//           <p className="text-gray-500">No upcoming events found.</p>
-//         )}
-//       </div>
-
-//       {/* Past Events */}
-//       <div>
-//         <h2 className="text-3xl font-bold text-center text-white mb-8 tracking-wide border-b-4 border-blue-500 inline-block pb-1">
-//           Past Events
-//         </h2>
-//         {pastEvents.length > 0 ? (
-//           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-//             {renderEvents(pastEvents)}
-//           </div>
-//         ) : (
-//           <p className="text-gray-500">No past events found.</p>
-//         )}
-//       </div>
-
-//       {/* Modal */}
-//       {showModal && selectedEvent && (
-//         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
-//           <div className="bg-white rounded-xl p-6 max-w-2xl w-full relative">
-//             <button
-//               className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-2xl"
-//               onClick={closeModal}
-//             >
-//               &times;
-//             </button>
-
-//             {selectedEvent.poster && (
-//               <img
-//                 src={`http://localhost:5000${selectedEvent.poster}`}
-//                 alt="Event Poster"
-//                 className="w-full aspect-video object-cover rounded mb-4"
-//               />
-//             )}
-
-//             <h2 className="text-2xl font-bold mb-2">{selectedEvent.name}</h2>
-//             <p className="text-sm text-gray-500 mb-1">
-//               {new Date(selectedEvent.date).toDateString()}
-//             </p>
-//             <p className="mb-3 text-gray-700">{selectedEvent.description}</p>
-//             <a
-//               href={selectedEvent.link}
-//               target="_blank"
-//               rel="noreferrer"
-//               className="text-indigo-600 underline block mb-2"
-//             >
-//               Visit Event Page
-//             </a>
-//             <p className="text-gray-600 mb-4">📞 Contact: {selectedEvent.contact}</p>
-
-//             <div className="text-right">
-//               <button
-//                 onClick={closeModal}
-//                 className="mt-2 w-full px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded text-sm"
-//               >
-//                 Close
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default EventList;
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { motion } from "framer-motion";
+import { FaCalendarAlt, FaHistory, FaLink } from "react-icons/fa";
+import { toast } from "react-hot-toast";
 
 const Events = () => {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [pastEvents, setPastEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchEvents = async () => {
-    const res = await axios.get("http://localhost:5000/api/app/events");
-    const today = new Date();
+    try {
+      const res = await axios.get("http://localhost:5000/api/app/events");
+      const today = new Date();
 
-    const upcoming = res.data.filter((event) => new Date(event.date) >= today);
-    const past = res.data.filter((event) => new Date(event.date) < today);
+      const upcoming = res.data.filter((event) => new Date(event.date) >= today);
+      const past = res.data.filter((event) => new Date(event.date) < today);
 
-    setUpcomingEvents(upcoming);
-    setPastEvents(past);
+      setUpcomingEvents(upcoming);
+      setPastEvents(past);
+      setLoading(false);
+    } catch (error) {
+      toast.error("Failed to load events");
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchEvents();
   }, []);
 
-  const renderEventCard = (event) => (
-    <div
+  const EventCard = ({ event, isPast }) => (
+    <motion.div
       key={event._id}
-      className="bg-white shadow-lg rounded-xl overflow-hidden flex flex-col justify-between transition hover:shadow-xl hover:scale-[1.02] duration-200"
+      whileHover={{ y: -5 }}
+      className="bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow"
     >
       {event.poster && (
         <img
           src={`http://localhost:5000${event.poster}`}
-          alt="poster"
-          className="w-full h-40 object-cover"
+          alt={event.name}
+          className="w-full h-48 object-cover"
+          onError={(e) => {
+            e.target.src = '/placeholder-event.jpg';
+          }}
         />
       )}
-
-      <div className="p-4 flex flex-col justify-between flex-grow">
-        <div>
-          <h3 className="font-semibold text-lg text-gray-800 mb-1 truncate">
-            {event.name}
-          </h3>
-          <p className="text-gray-600 text-sm mb-2 line-clamp-3">
-            {event.description}
-          </p>
+      <div className="p-5">
+        <div className="flex items-center mb-2">
+          <FaCalendarAlt className="text-blue-600 mr-2" />
+          <span className="text-sm text-slate-600">
+            {new Date(event.date).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })}
+          </span>
         </div>
-
-        <div className="mt-2 text-sm text-gray-500">
-          <p>
-            <span className="font-semibold">Date:</span>{" "}
-            {new Date(event.date).toLocaleDateString()}
-          </p>
-          {event.link && (
-            <a
-              href={event.link}
-              target="_blank"
-              rel="noreferrer"
-              className="text-blue-600 hover:underline text-sm"
-            >
-              View Link
-            </a>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="p-6 min-h-screen bg-[#1d2531]">
-      <h2 className="text-3xl font-bold text-center text-blue-400 mb-8">
-        🎉 Upcoming Events
-      </h2>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        {upcomingEvents.length > 0 ? (
-          upcomingEvents.map(renderEventCard)
-        ) : (
-          <p className="text-center col-span-full text-gray-300">
-            No upcoming events.
-          </p>
+        <h3 className="text-xl font-bold text-slate-800 mb-2">{event.name}</h3>
+        <p className="text-slate-600 mb-4 line-clamp-3">{event.description}</p>
+        {event.link && (
+          <a
+            href={event.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center text-blue-600 hover:text-blue-800"
+          >
+            <FaLink className="mr-1" /> Event Link
+          </a>
+        )}
+        {isPast && (
+          <div className="mt-3">
+            <span className="inline-block bg-slate-100 text-slate-800 text-xs px-2 py-1 rounded">
+              Past Event
+            </span>
+          </div>
         )}
       </div>
+    </motion.div>
+  );
 
-      <h2 className="text-3xl font-bold text-center text-gray-200 mb-6">
-        📜 Past Events
-      </h2>
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {pastEvents.length > 0 ? (
-          pastEvents.map(renderEventCard)
-        ) : (
-          <p className="text-center col-span-full text-gray-300">
-            No past events.
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl font-bold text-slate-800 mb-2">Upcoming Events</h2>
+          <p className="text-slate-600 max-w-2xl mx-auto">
+            Discover exciting events and opportunities to connect with fellow alumni
           </p>
+        </motion.div>
+
+        {upcomingEvents.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+            {upcomingEvents.map((event) => (
+              <EventCard key={event._id} event={event} isPast={false} />
+            ))}
+          </div>
+        ) : (
+          <div className="bg-white rounded-xl p-8 text-center shadow-sm border border-slate-200 mb-20">
+            <h3 className="text-2xl font-semibold text-slate-800 mb-2">No Upcoming Events</h3>
+            <p className="text-slate-600">Check back later for new events</p>
+          </div>
+        )}
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl font-bold text-slate-800 mb-2 flex items-center justify-center">
+            <FaHistory className="mr-2" /> Past Events
+          </h2>
+          <p className="text-slate-600">Relive our previous gatherings and activities</p>
+        </motion.div>
+
+        {pastEvents.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {pastEvents.map((event) => (
+              <EventCard key={event._id} event={event} isPast={true} />
+            ))}
+          </div>
+        ) : (
+          <div className="bg-white rounded-xl p-8 text-center shadow-sm border border-slate-200">
+            <h3 className="text-2xl font-semibold text-slate-800 mb-2">No Past Events</h3>
+            <p className="text-slate-600">Our event history will appear here</p>
+          </div>
         )}
       </div>
     </div>
